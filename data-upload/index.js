@@ -24,9 +24,9 @@ const data2022q2 = require("../Rental-Data/2022Q2.json");
 const allYearsData = [
   [data2018q1, data2018q2, data2018q3, data2018q4], // year 2018
   [data2019q1, data2019q2, data2019q3, data2019q4], // year 2019
-  [data2020q1, data2020q2, data2020q3, data2020q4][ // year 2020
-    (data2021q1, data2021q2, data2021q3, data2021q4)
-  ][(data2022q1, data2022q2)], // year 2021 // year 2022
+  [data2020q1, data2020q2, data2020q3, data2020q4], // year 2020
+  [data2021q1, data2021q2, data2021q3, data2021q4], // year 2021
+  [data2022q1, data2022q2], // year 2022
 ];
 
 const combinedData = {
