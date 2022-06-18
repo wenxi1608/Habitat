@@ -9,6 +9,15 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
+// import { getFirestore } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+} from "https://www.gstatic.com/firebasejs/9.8.3/firebase-firestore-lite.js";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,3 +35,27 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function getData() {
+  const usersCollection = collection(db, "users");
+  const usersSnapshot = await getDocs(usersCollection);
+  const usersList = usersSnapshot.docs.map((doc) => doc.data());
+  console.log(usersList);
+}
+
+async function getRentalData() {
+  const rentalCollection = doc(db, "2018q1", "04");
+  const apple = await getDoc(rentalCollection);
+  // console.log(apple);
+
+  if (apple.exists()) {
+    console.log("Document data:", apple.data());
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+  }
+}
+
+document.getElementById("get-data").onclick = getData;
+document.getElementById("get-rental").onclick = getRentalData;
