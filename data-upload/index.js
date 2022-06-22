@@ -1,7 +1,9 @@
+// Push data from admin/server
 const { initializeApp, cert } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 const serviceAccount = require("./serviceAccountKey.json");
 
+// Get data array from the JSON files
 const data2018q1 = require("../Rental-Data/2018Q1.json");
 const data2018q2 = require("../Rental-Data/2018Q2.json");
 const data2018q3 = require("../Rental-Data/2018Q3.json");
@@ -12,7 +14,7 @@ const data2019q3 = require("../Rental-Data/2019Q3.json");
 const data2019q4 = require("../Rental-Data/2019Q4.json");
 const data2020q1 = require("../Rental-Data/2020Q1.json");
 const data2020q2 = require("../Rental-Data/2019Q2.json");
-const data2020q2 = require("../Rental-Data/2019Q3.json");
+const data2020q3 = require("../Rental-Data/2019Q3.json");
 const data2020q4 = require("../Rental-Data/2019Q4.json");
 const data2021q1 = require("../Rental-Data/2021Q1.json");
 const data2021q2 = require("../Rental-Data/2021Q2.json");
@@ -21,6 +23,7 @@ const data2021q4 = require("../Rental-Data/2021Q4.json");
 const data2022q1 = require("../Rental-Data/2022Q1.json");
 const data2022q2 = require("../Rental-Data/2022Q2.json");
 
+// Create a 2D array for the quarter data
 const allYearsData = [
   [data2018q1, data2018q2, data2018q3, data2018q4], // year 2018
   [data2019q1, data2019q2, data2019q3, data2019q4], // year 2019
@@ -29,6 +32,7 @@ const allYearsData = [
   [data2022q1, data2022q2], // year 2022
 ];
 
+// Create an object to store all quarter's worth of data
 const combinedData = {
   "2018q1": {},
   "2018q2": {},
@@ -52,6 +56,7 @@ const combinedData = {
 const startingYear = 2018;
 const startingQuarter = 1;
 
+// Access each element in the allYearsData array using nested forEach method
 allYearsData.forEach((yearData, yearIndexPosition) => {
   yearData.forEach((quarterData, quarterIndexPosition) => {
     quarterData.forEach((data) => {
@@ -94,23 +99,23 @@ initializeApp({
 
 const db = getFirestore();
 
-// for (const property in combinedData) {
-//   // const collectionName = "nlp-rentals";
+for (const property in combinedData) {
+  // const collectionName = "nlp-rentals";
 
-//   const allDistrictDataForQuarterAndYear = combinedData[property];
+  const allDistrictDataForQuarterAndYear = combinedData[property];
 
-//   for (const district in allDistrictDataForQuarterAndYear) {
-//     const documentReference = db.collection(property).doc(district);
+  for (const district in allDistrictDataForQuarterAndYear) {
+    const documentReference = db.collection(property).doc(district);
 
-//     const writeIntoFirebase = async () => {
-//       await documentReference.set({
-//         data: combinedData[property][district],
-//       });
-//     };
+    const writeIntoFirebase = async () => {
+      await documentReference.set({
+        data: combinedData[property][district],
+      });
+    };
 
-//     writeIntoFirebase();
-//   }
-// }
+    writeIntoFirebase();
+  }
+}
 
 // const test = async () => {
 //   const districtRef = db.collection("2018q1").doc("07");

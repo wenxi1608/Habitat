@@ -1,12 +1,3 @@
-// const url = "https://www.ura.gov.sg/uraDataService/invokeUraDS?service=PMI_Resi_Rental&refPeriod=21q1&AccessKey=23fea41f-e994-485b-a186-e26c956c4b8f&Token=q999f7pM9cT9Vc3qNzt968mv4ukJEN64e-BhzDe2RwKFMe9hWa9R6e578yMEx-8671bv4c17nbeae4xxc3b4cVm442Jrc3f94pT4"
-
-// async function fetchURA(url) {
-//       const response = await fetch(url);
-//       const data = await response.json();
-//       console.log("URA API:", data);
-// }
-// fetchURA();
-
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
 // import { getFirestore } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-firestore.js";
@@ -17,6 +8,36 @@ import {
   getDoc,
   doc,
 } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-firestore-lite.js";
+google.charts.load("current", { packages: ["corechart"] });
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback(drawChart);
+
+// Callback that creates and populates a data table,
+// instantiates the pie chart, passes in the data and
+// draws it.
+function drawChart() {
+  // Create the data table.
+  var data = new google.visualization.DataTable();
+  data.addColumn("string", "Area");
+  data.addColumn("number", "Average Rent");
+  data.addRows([
+    ["100 - 110sqm", 3],
+    ["110 - 120sqm", 1],
+    ["120 - 130sqm", 1],
+    ["130 - 140sqm", 1],
+    ["140 - 150sqm", 2],
+  ]);
+
+  // Set chart options
+  var options = { title: "Average Monthly Rent", width: 500, height: 300 };
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.ColumnChart(
+    document.getElementById("chart")
+  );
+  chart.draw(data, options);
+}
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,26 +57,63 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-async function getData() {
-  const usersCollection = collection(db, "users");
-  const usersSnapshot = await getDocs(usersCollection);
-  const usersList = usersSnapshot.docs.map((doc) => doc.data());
-  console.log(usersList);
-}
-
 async function getRentalData() {
-  const rentalCollection = doc(db, "2018q1", "04");
-  const apple = await getDoc(rentalCollection);
-  // console.log(apple);
+  const rentalCollection = doc(db, "2022q2", "01");
+  const districtOne22Q2 = await getDoc(rentalCollection);
 
-  if (apple.exists()) {
-    console.log("Document data:", apple.data());
+  if (districtOne22Q2.exists()) {
+    console.log("Document data:", districtOne22Q2.data());
   } else {
     // doc.data() will be undefined in this case
-    console.log("No such document!");
+    console.log("No such document!"); //Print message to user, e.g. invalid
   }
 }
+getRentalData();
+// Step 1: Get year/quarter/district input from the dropdown form
 
-document.getElementById("get-data").onclick = getData;
-document.getElementById("get-rental").onclick = getRentalData;
+// Step 1: Listen for when the user submits the year/quarter/district input
+document.getElementById("submit").onclick = retrieveData;
+
+// // Step 2: Call a function to retrieve doc from Firebase based on user input
+function retrieveData() {
+  // 2a: Get values from Form
+  const selYear = document.getElementById("Year").value;
+  const selQuarter = document.getElementById("Quarter").value;
+  const selDistrict = document.getElementById("District").value;
+
+  const collectionName = selYear + "q" + selQuarter;
+
+  // 2b: Call Firebase
+  async function getRentalData() {
+    const rentalCollection = doc(db, collectionName, selDistrict);
+    const districtOne22Q2 = await getDoc(rentalCollection);
+
+    if (districtOne22Q2.exists()) {
+      console.log("Document data:", districtOne22Q2.data());
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!"); //Print message to user, e.g. invalid
+    }
+  }
+}
+//   // 3a: Retrieve data as an object based on user input
+
+//     // 3b: Loop through the object and return new array where areaSqm is in the range
+//     const queryResult = docSnap.map((value) => {
+//       if(queryResult.areaSqm === "100-110")
+//       return value.rent;
+//     });
+
+//     // 3c: Calculate average of rent values based on given areaSqm
+
+//     let total = 0;
+//     for(let i = 0; i < queryResult.length; i++) {
+//       total += queryResult.rent[i];
+//     }
+//     let avgRent = total / queryResult.length;
+
+//     // 3d: Create 2d array and pass values in
+
+// }
+
+// // Step 4: Pass the data to Google Chart
