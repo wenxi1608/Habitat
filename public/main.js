@@ -57,19 +57,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-async function getRentalData() {
-  const rentalCollection = doc(db, "2022q2", "01");
-  const districtOne22Q2 = await getDoc(rentalCollection);
-
-  if (districtOne22Q2.exists()) {
-    console.log("Document data:", districtOne22Q2.data());
-  } else {
-    // doc.data() will be undefined in this case
-    console.log("No such document!"); //Print message to user, e.g. invalid
-  }
-}
-getRentalData();
-// Step 1: Get year/quarter/district input from the dropdown form
 
 // Step 1: Listen for when the user submits the year/quarter/district input
 document.getElementById("submit").onclick = retrieveData;
@@ -77,32 +64,54 @@ document.getElementById("submit").onclick = retrieveData;
 // // Step 2: Call a function to retrieve doc from Firebase based on user input
 function retrieveData() {
   // 2a: Get values from Form
-  const selYear = document.getElementById("Year").value;
-  const selQuarter = document.getElementById("Quarter").value;
-  const selDistrict = document.getElementById("District").value;
+  const getYear = document.getElementById("Year").value;
+  const getQuarter = document.getElementById("Quarter").value;
+  const getDistrict = document.getElementById("District").value;
 
-  const collectionName = selYear + "q" + selQuarter;
+  const collectionName = getYear + "q" + getQuarter;
 
   // 2b: Call Firebase
   async function getRentalData() {
-    const rentalCollection = doc(db, collectionName, selDistrict);
-    const districtOne22Q2 = await getDoc(rentalCollection);
+    const docData = doc(db, collectionName, getDistrict);
+    const rentalDataOutput = await getDoc(docData);
 
-    if (districtOne22Q2.exists()) {
-      console.log("Document data:", districtOne22Q2.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!"); //Print message to user, e.g. invalid
+    // if (rentalDataOutput.exists()) {
+    //   console.log("Document data:", rentalDataOutput.data().data); // invoking the function
+    // } else {
+    //   console.log("No such document!"); //Print message to user, e.g. invalid
+    // }
+
+    const resultArray = rentalDataOutput.data().data;
+
+    // Return array of objects with areaSqm of 100-110sqm
+    const areaSqmOf100to110 = resultArray.filter((element) => {
+      if (element.areaSqm === "100-110") {
+        return element;
+      }
+    });
+
+    // Create an array with all the returned rent values
+    const allRent = areaSqmOf100to110.map((element) => {
+      return element.rent;
+    });
+
+    // Get average of all rent values within the array
+    const sumOfRent = allRent.reduce(getAvg);
+    function getAvg(total, value, index, array) {
+      return total + value;
     }
-  }
-}
-//   // 3a: Retrieve data as an object based on user input
 
-//     // 3b: Loop through the object and return new array where areaSqm is in the range
-//     const queryResult = docSnap.map((value) => {
-//       if(queryResult.areaSqm === "100-110")
-//       return value.rent;
-//     });
+    const avgRent =
+      "$" + Math.round(sumOfRent / allRent.length).toLocaleString("en-US");
+    console.log(avgRent);
+  }
+  getRentalData();
+}
+// 3b: Loop through the object and return new array where areaSqm is in the range
+
+//   if(queryResult.areaSqm === "100-110")
+//   return value.rent;
+// });
 
 //     // 3c: Calculate average of rent values based on given areaSqm
 
