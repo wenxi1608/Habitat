@@ -10,35 +10,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-firestore-lite.js";
 google.charts.load("current", { packages: ["corechart"] });
 
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawChart);
-
-// Callback that creates and populates a data table,
-// instantiates the pie chart, passes in the data and
-// draws it.
-function drawChart() {
-  // Create the data table.
-  var data = new google.visualization.DataTable();
-  data.addColumn("string", "Area");
-  data.addColumn("number", "Average Rent");
-  data.addRows([
-    ["100 - 110sqm", 3],
-    ["110 - 120sqm", 1],
-    ["120 - 130sqm", 1],
-    ["130 - 140sqm", 1],
-    ["140 - 150sqm", 2],
-  ]);
-
-  // Set chart options
-  var options = { title: "Average Monthly Rent", width: 500, height: 300 };
-
-  // Instantiate and draw our chart, passing in some options.
-  var chart = new google.visualization.ColumnChart(
-    document.getElementById("chart")
-  );
-  chart.draw(data, options);
-}
-
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -75,54 +46,106 @@ function retrieveData() {
     const docData = doc(db, collectionName, getDistrict);
     const rentalDataOutput = await getDoc(docData);
 
-    // if (rentalDataOutput.exists()) {
-    //   console.log("Document data:", rentalDataOutput.data().data); // invoking the function
-    // } else {
-    //   console.log("No such document!"); //Print message to user, e.g. invalid
-    // }
-
-    const resultArray = rentalDataOutput.data().data;
-
-    // Return array of objects with areaSqm of 100-110sqm
-    const areaSqmOf100to110 = resultArray.filter((element) => {
-      if (element.areaSqm === "100-110") {
-        return element;
-      }
-    });
-
-    // Create an array with all the returned rent values
-    const allRent = areaSqmOf100to110.map((element) => {
-      return element.rent;
-    });
-
-    // Get average of all rent values within the array
-    const sumOfRent = allRent.reduce(getAvg);
-    function getAvg(total, value, index, array) {
-      return total + value;
+    // Print Error Message if date selection is invalid
+    if (rentalDataOutput.exists() === false) {
+      document.getElementById("chart").textContent = "Invalid Date Selected";
+      console.log("Invalid Data");
     }
 
-    const avgRent =
-      "$" + Math.round(sumOfRent / allRent.length).toLocaleString("en-US");
-    console.log(avgRent);
+    const resultArray = rentalDataOutput.data().data;
+    // Find the areaSqm values available
+    const listOfAreaSqm = resultArray.map((value) => {
+      return value.areaSqm;
+    });
+    const uniqueAreaSqmValues = [...new Set(listOfAreaSqm)];
+    console.log(uniqueAreaSqmValues);
+
+    // Create a loop to return data row arrays for Google Charts [areaSqm, avg rent]
+    const areaSqmRangeOfValues = [
+      "100-110",
+      "110-120",
+      "120-130",
+      "130-140",
+      "140-150",
+      "150-160",
+      "160-170",
+      "170-180",
+      "180-190",
+      "190-200",
+      "200-210",
+      "210-220",
+      "220-230",
+      "230-240",
+      "240-250",
+      "250-260",
+      "260-270",
+      "270-280",
+      "280-290",
+      "290-300",
+      ">300",
+    ];
+    console.log(areaSqmRangeOfValues[20]);
+    for (let i = 0; i <= areaSqmRangeOfValues.length; i++) {
+      const areaSqmRange = resultArray.filter((element) => {
+        if (element.areaSqm === areaSqmRangeOfValues[i]) {
+          return element;
+        }
+      });
+
+      // Create an array with all the returned rent values
+      const allRent = areaSqmRange.map((element) => {
+        return element.rent;
+      });
+
+      // Get average of all rent values within the array
+      let sumOfRent = "";
+      if (allRent.length > 1) {
+        sumOfRent = allRent.reduce(getAvg);
+        function getAvg(total, value, index, array) {
+          return total + value;
+        }
+      } else {
+        return (sumOfRent = allRent);
+      }
+
+      const avgRent =
+        "$" + Math.round(sumOfRent / allRent.length).toLocaleString("en-US");
+      //console.log(avgRent);
+
+      // Create row array for each areaSqm range and push values into displayData.addRows array
+      let areaSqmAndAvgRent = [areaSqmRangeOfValues[i]];
+      let addRent = areaSqmAndAvgRent.push(avgRent);
+      let dataToAddToChart = [];
+      dataToAddToChart.push(areaSqmAndAvgRent);
+      console.log(dataToAddToChart);
+    }
+    // Step 4: Pass the data to Google Chart
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Callback that creates and populates a data table,
+    // instantiates the chart, passes in the data and
+    // draws it.
+    function drawChart() {
+      // Create the data table.
+      var displayData = new google.visualization.DataTable();
+      displayData.addColumn("string", "Area");
+      displayData.addColumn("number", "Average Rent");
+      displayData.addRows([
+        ["nero", 15],
+        ["enzo", 12],
+      ]);
+
+      // Set chart options
+      var options = { title: "Average Monthly Rent", width: 500, height: 300 };
+
+      // Instantiate and draw our chart, passing in some options.
+      var chart = new google.visualization.ColumnChart(
+        document.getElementById("chart")
+      );
+      chart.draw(displayData, options);
+    }
   }
   getRentalData();
 }
-// 3b: Loop through the object and return new array where areaSqm is in the range
-
-//   if(queryResult.areaSqm === "100-110")
-//   return value.rent;
-// });
-
-//     // 3c: Calculate average of rent values based on given areaSqm
-
-//     let total = 0;
-//     for(let i = 0; i < queryResult.length; i++) {
-//       total += queryResult.rent[i];
-//     }
-//     let avgRent = total / queryResult.length;
-
-//     // 3d: Create 2d array and pass values in
-
-// }
-
-// // Step 4: Pass the data to Google Chart
