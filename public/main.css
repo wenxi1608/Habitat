@@ -1,4 +1,46 @@
-.h1 {
-    margin: 1em;
-    background-color: aqua;
+#page-header {
+    padding: 0px;
+}
+
+#page-header figure {
+    margin: 0px;
+    height: 4em;
+}
+
+#page-header figcaption {
+    font-family: 'Unica One', cursive;
+    display: inline;
+}
+
+#page-header img {
+    height: 100%;
+}
+
+#page-header .nav-item a {
+    font-family: 'Unica One', cursive;
+    font-size: 1.2em;
+    color: white;
+    padding: 0px 30px;
+}
+
+.container-fluid {
+    background-color: #f5c014;
+}
+
+#landing-page {
+    background: url(./img/singapore-g7dfee4c8d_1920.jpg);
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#map img {
+    max-width: 40rem;
+    height: auto;
+    margin: 5em;
+}
+
+#page-header .navbar-brand{
+    color: white;
+    font-size: 35px;
 }

@@ -4,24 +4,62 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./main.css">
-    <script type="module" src="./main.js"></script>
-    <title>Habitat</title>
+    <link href="./main.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Unica+One&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
+    <title>Habitat</title>
   </head>
   
 <body>
-    <h1>Habitat</h1>
 
-    <section>Singapore Map</section>
+  <nav id="page-header" class="navbar navbar-expand-lg bg-light">
+
+    <div class="container-fluid">
+
+      <figure class="mr-3">
+        <img src="./img/habitatlogoicon.png" srcset="./img/habitatlogoicon.png 1x, ./img/habitatlogoicon.png 2x" />
+        <figcaption><a class="navbar-brand">Habitat</a></figcaption>
+      </figure>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="./About.html">About</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="./resources.html">Resources</a>
+          </li>
+          
+        </ul>
+
+      </div>
+
+    </div>
+
+  </nav>
+  
+    </section>
 
     <section>
-
+      
       <div class="input-group mb-3">
-        <label class="input-group-text" for="Year">Year</label>
-        <select class="form-select" id="Year">
+        <label class="input-group-text" for="year">Year</label>
+        <select class="form-select" id="year">
           <option selected>Select...</option>
           <option value="2022">2022</option>
           <option value="2021">2021</option>
@@ -32,8 +70,8 @@
       </div>
 
       <div class="input-group mb-3">
-        <label class="input-group-text" for="Quarter">Quarter</label>
-        <select class="form-select" id="Quarter">
+        <label class="input-group-text" for="quarter">Quarter</label>
+        <select class="form-select" id="quarter">
           <option selected>Select...</option>
           <option value="1">Q1</option>
           <option value="2">Q2</option>
@@ -43,8 +81,8 @@
       </div>
 
       <div class="input-group mb-3">
-        <label class="input-group-text" for="District">District</label>
-        <select class="form-select" id="District">
+        <label class="input-group-text" for="district">District</label>
+        <select class="form-select" id="district">
           <option selected>Select...</option>
           <option value="01">01 - Raffles Place, Marina, Cecil, People's Park</option>
           <option value="02">02 - Anson, Tanjong Pagar</option>
@@ -77,18 +115,16 @@
         </select>
       </div>
 
-      <div><button id="submit">Submit</button></div>
+      <div>
+        <button id="submit">Submit</button>
+      </div>
 
-      <div id="chart">Average Rental Rate</div>
-
-      
+      <div id="chart"></div>
 
     </section>
     
-    
-   
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    
+    <script type="module" src="./main.js"></script>
+  
 </body>
 
 </html>
