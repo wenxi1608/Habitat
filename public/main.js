@@ -55,7 +55,7 @@ function retrieveData() {
     const resultArray = rentalDataOutput.data().data;
 
     // Create a loop to return an array for Google Charts [areaSqm, avg rent]
-    const areaSqmRangeOfValues = [
+    const houseSizes = [
       "100-110",
       "110-120",
       "120-130",
@@ -78,11 +78,11 @@ function retrieveData() {
       "290-300",
       ">300",
     ];
-
     const dataToAddToChart = [];
-    for (let i = 0; i <= areaSqmRangeOfValues.length; i++) {
+    const x = houseSizes.length;
+    for (let i = 0; i <= x; i++) {
       const areaSqmRange = resultArray.filter((element) => {
-        if (element.areaSqm === areaSqmRangeOfValues[i]) {
+        if (element.areaSqm === houseSizes[i]) {
           return element;
         }
       });
@@ -103,8 +103,8 @@ function retrieveData() {
 
       const avgRent = Math.round(sumOfRent / allRent.length);
 
-      // Create row array for each areaSqm range and push values into displayData.addRows array
-      const areaSqmAndAvgRent = [`${areaSqmRangeOfValues[i]}sqm`];
+      // Create row array for each house size to push values into Google Charts
+      const areaSqmAndAvgRent = [`${houseSizes[i]}sqm`];
       const addRent = areaSqmAndAvgRent.push(avgRent);
       dataToAddToChart.push(areaSqmAndAvgRent);
     }
@@ -113,7 +113,6 @@ function retrieveData() {
     // instantiates the chart, passes in the data and
     // draws it.
     function drawChart() {
-      console.log(">>>", dataToAddToChart);
       const displayData = new google.visualization.DataTable();
       displayData.addColumn("string", "Area");
       displayData.addColumn("number", "Average Rent (S$)");
@@ -125,7 +124,7 @@ function retrieveData() {
         height: 600,
       };
 
-      // Instantiate and draw our chart, passing in some options.
+      // Instantiate and draw chart, passing in some options.
       const chart = new google.visualization.ColumnChart(
         document.getElementById("chart")
       );
@@ -141,7 +140,7 @@ function init() {
   google.charts.load();
   initializeApp();
   getFirestore();
-  addEventListener.onclick;
+  document.getElementById("submit").onclick;
   retrieveData();
   getRentalData();
   getAvg();
