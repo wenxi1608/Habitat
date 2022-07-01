@@ -7,3 +7,4 @@ Habitat is an app that allows landlords, tenants and property agents to view the
 1. Create a form using Bootstrap with the desired fields (i.e. year, quarter, district)
 2. Use async function to call data based on user input
 3. Pass the data into a column chart (for this app, the Google Charts charts library was used)
+4. 12345
