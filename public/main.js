@@ -30,6 +30,48 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+function drawChart() {
+  const displayData = new google.visualization.DataTable();
+  displayData.addColumn("string", "Area");
+  displayData.addColumn("number", "Average Rent (S$)");
+  displayData.addRows([
+    ["100-110sqm", 0],
+    ["110-120sqm", 0],
+    ["120-130sqm", 0],
+    ["130-140sqm", 0],
+    ["140-150sqm", 0],
+    ["160-170sqm", 0],
+    ["170-180sqm", 0],
+    ["180-190sqm", 0],
+    ["190-200sqm", 0],
+    ["200-210sqm", 0],
+    ["210-220sqm", 0],
+    ["220-230sqm", 0],
+    ["230-240sqm", 0],
+    ["240-250sqm", 0],
+    ["250-260sqm", 0],
+    ["260-270sqm", 0],
+    ["270-280sqm", 0],
+    ["280-290sqm", 0],
+    ["290-300sqm", 0],
+    [">300sqm", 0],
+  ]);
+  // Set chart options
+  const options = {
+    title: "Average Monthly Rent by Unit Size",
+    width: 900,
+    height: 700,
+  };
+
+  // Instantiate and draw chart, passing in some options.
+  const chart = new google.visualization.ColumnChart(
+    document.getElementById("chart")
+  );
+  chart.draw(displayData, options);
+}
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback(drawChart);
+
 // Step 1: Listen for when the user submits the year/quarter/district input
 document.getElementById("submit").onclick = retrieveData;
 
@@ -81,14 +123,14 @@ function retrieveData() {
     const dataToAddToChart = [];
     const x = houseSizes.length;
     for (let i = 0; i <= x; i++) {
-      const areaSqmRange = resultArray.filter((element) => {
+      const areaSqmAndRentArray = resultArray.filter((element) => {
         if (element.areaSqm === houseSizes[i]) {
           return element;
         }
       });
 
       // Create an array with all the returned rent values
-      const allRent = areaSqmRange.map((element) => element.rent);
+      const allRent = areaSqmAndRentArray.map((element) => element.rent);
 
       // Get average of all rent values within the array
       let sumOfRent = "";
@@ -120,8 +162,8 @@ function retrieveData() {
       // Set chart options
       const options = {
         title: "Average Monthly Rent by Unit Size",
-        width: 1000,
-        height: 600,
+        width: 900,
+        height: 700,
       };
 
       // Instantiate and draw chart, passing in some options.
@@ -135,17 +177,17 @@ function retrieveData() {
   }
   getRentalData();
 }
+// function init() {
+//   google.charts.load();
+//   const firebaseConfig = {};
+//   initializeApp();
+//   getFirestore();
+//   document.getElementById("submit").onclick;
+//   retrieveData();
+//   getRentalData();
+//   getAvg();
+//   drawChart();
+//   google.charts.setOnLoadCallback();
+// }
 
-function init() {
-  google.charts.load();
-  initializeApp();
-  getFirestore();
-  document.getElementById("submit").onclick;
-  retrieveData();
-  getRentalData();
-  getAvg();
-  drawChart();
-  google.charts.setOnLoadCallback();
-}
-
-init();
+// init();
