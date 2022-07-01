@@ -40,6 +40,8 @@ footer.fixed-bottom {
 
 .container {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     margin: 2em;
 }
 
@@ -58,10 +60,14 @@ li {
 
 #form {
     margin: 2em;
+    text-align: center;
 }
 
 #chart {
     border-style: solid;
     border-width: 0.5px;
     border-color: rgb(51,51,51);
+    text-align: center;
+    min-height: 500px;
+    line-height: 500px;
 }
