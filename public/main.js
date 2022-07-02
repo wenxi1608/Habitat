@@ -135,17 +135,18 @@ function retrieveData() {
   }
   getRentalData();
 }
-// function init() {
-//   google.charts.load();
-//   const firebaseConfig = {};
-//   initializeApp();
-//   getFirestore();
-//   document.getElementById("submit").onclick;
-//   retrieveData();
-//   getRentalData();
-//   getAvg();
-//   drawChart();
-//   google.charts.setOnLoadCallback();
-// }
 
-// init();
+function init() {
+  google.charts.load();
+  const firebaseConfig = {};
+  initializeApp();
+  getFirestore();
+  document.getElementById("submit").onclick;
+  retrieveData();
+  getRentalData();
+  getAvg();
+  drawChart();
+  google.charts.setOnLoadCallback();
+}
+
+init();
